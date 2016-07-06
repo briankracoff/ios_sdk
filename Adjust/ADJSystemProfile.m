@@ -29,11 +29,11 @@
     size_t length = sizeof(value);
 
     error = sysctlbyname("hw.cpu64bit_capable", &value, &length, NULL, 0);
-    
+
     if(error != 0) {
         error = sysctlbyname("hw.optional.x86_64", &value, &length, NULL, 0); //x86 specific
     }
-    
+
     if(error != 0) {
         error = sysctlbyname("hw.optional.64bitops", &value, &length, NULL, 0); //PPC specific
     }
@@ -67,10 +67,6 @@
             return @"CPUFAMILY_POWERPC_G5";
         case CPUFAMILY_INTEL_6_13:
             return @"CPUFAMILY_INTEL_6_13";
-        case CPUFAMILY_INTEL_YONAH:
-            return @"CPUFAMILY_INTEL_YONAH";
-        case CPUFAMILY_INTEL_MEROM:
-            return @"CPUFAMILY_INTEL_MEROM";
         case CPUFAMILY_INTEL_PENRYN:
             return @"CPUFAMILY_INTEL_PENRYN";
         case CPUFAMILY_INTEL_NEHALEM:
@@ -120,7 +116,7 @@
         return nil;
     }
     NSString *version = [info operatingSystemVersionString];
-    
+
     if ([version hasPrefix:@"Version "]) {
         version = [version substringFromIndex:8];
     }
@@ -134,12 +130,12 @@
     int value = 0;
     size_t length = sizeof(value);
     error = sysctlbyname("hw.ncpu", &value, &length, NULL, 0);
-    
+
     if (error != 0) {
         NSLog(@"Failed to obtain CPU count");
         return 1;
     }
-    
+
     return value;
 }
 
@@ -177,7 +173,7 @@
         NSLog(@"Failed to obtain preferred language");
         return nil;
     }
-    
+
     return [languages objectAtIndex:0];
 }
 
@@ -190,16 +186,16 @@
     int64_t hertz = 0;
 	size_t size = sizeof(hertz);
 	int mib[2] = {CTL_HW, HW_CPU_FREQ};
-	
+
 	error = sysctl(mib, 2, &hertz, &size, NULL, 0);
-	
+
     if (error) {
         NSLog(@"Failed to obtain CPU speed");
         return -1;
     }
-	
+
 	result = (long long)(hertz/1000000); // Convert to MHz
-    
+
     return result;
 }
 
@@ -210,7 +206,7 @@
 	int error = 0;
     int64_t value = 0;
     size_t length = sizeof(value);
-	
+
     error = sysctlbyname("hw.memsize", &value, &length, NULL, 0);
 	if (error) {
         NSLog(@"Failed to obtain RAM size");
@@ -218,7 +214,7 @@
 	}
 	const int64_t kBytesPerMebibyte = 1024*1024;
 	result = (long long)(value/kBytesPerMebibyte);
-    
+
     return result;
 }
 
@@ -560,7 +556,7 @@
     free(p);
 
     return result;
-    
+
 }
 
 @end
